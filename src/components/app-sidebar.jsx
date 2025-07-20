@@ -87,52 +87,6 @@ const data = {
         },
       ],
     },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
-    },
   ],
   projects: [
     {
@@ -156,9 +110,10 @@ const data = {
 export function AppSidebar({ user, ...props }) {
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader>
+      <h2 className="text-3xl mt-2 ml-5">Exponent</h2>
+      {/* <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
-      </SidebarHeader>
+      </SidebarHeader> */}
       <SidebarContent>
         <NavMain items={data.navMain} />
         <NavProjects projects={data.projects} />
