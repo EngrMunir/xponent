@@ -53,25 +53,21 @@ const data = {
   ],
   navMain: [
     {
-      title: "Playground",
-      url: "#",
-      icon: SquareTerminal,
-      isActive: true,
-      items: [
-        {
-          title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
-        },
-      ],
+  title: "Quizzes",
+  url: "/admin/quizzes/create",
+  icon: BookOpen,
+  items: [
+    {
+      title: "Create Quiz",
+      url: "/dashboard/admin/quizzes/create",
     },
+    {
+      title: "All Quizzes",
+      url: "/dashboard/admin/quizzes",
+    },
+  ],
+},
+
     {
       title: "Models",
       url: "#",

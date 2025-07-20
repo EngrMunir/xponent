@@ -64,8 +64,7 @@ model PasswordResetToken {
 model Test {
   id            String            @id @default(uuid())
   name          String
-  positionId    String
-  position      Position @relation(fields: [positionId], references: [id])
+  position      String
   date          DateTime
   durationMin   Int
   groups        Group[]
@@ -134,7 +133,6 @@ model Choice {
   question   Question @relation(fields: [questionId], references: [id])
   questionId String
   index      Int // Unique index to match against correct answer
-  isCorrect  Boolean  @default(false)
 }
 
 model UserAnswer {
@@ -146,10 +144,4 @@ model UserAnswer {
   response      String // For MCQ: choice index as string; for TEXT: answer
   autoScore     Float? // For MCQ
   givenScore    Float? // For TEXT (manual evaluation)
-}
-
-model Position {
-  id     String  @id @default(uuid())
-  name   String  @unique
-  tests  Test[]
 }
