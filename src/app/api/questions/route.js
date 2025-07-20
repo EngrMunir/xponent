@@ -1,33 +1,50 @@
-import { db } from "@/lib/db";
+import { NextResponse } from "next/server";
+import { db } from "@/lib/db"; // or your prisma client path
 
 export async function POST(req) {
   try {
-    const { groupId, text, options, correctAnswers } = await req.json();
+    const body = await req.json();
+    const { groupId, text, type, score, options, correctAnswers } = body;
 
-    // Validate inputs
-    if (!groupId || !text || !Array.isArray(options) || options.length === 0 || !Array.isArray(correctAnswers)) {
-      return new Response(JSON.stringify({ error: "Missing fields" }), { status: 400 });
+    if (!groupId || !text || !type || !score) {
+      return NextResponse.json({ message: "Missing required fields" }, { status: 400 });
     }
 
-    const question = await db.question.create({
+    // Create the question
+    const newQuestion = await db.question.create({
       data: {
         groupId,
         text,
-        type: "MCQ", // Hardcoded for now, or send from frontend if needed
-        score: 1,     // Set a default score (you can customize later)
-        correct: correctAnswers[0], // index of correct answer (for MCQ only)
-        choices: {
-          create: options.map((opt, index) => ({
-            text: opt,
-            index: index,
-          })),
-        },
+        type,
+        score,
       },
     });
 
-    return new Response(JSON.stringify(question), { status: 201 });
+    // If MCQ, create choices and link to question
+    if (type === "MCQ") {
+      if (!options || !Array.isArray(options) || options.length < 2) {
+        return NextResponse.json({ message: "MCQ requires at least two options" }, { status: 400 });
+      }
+
+      const choiceData = options.map((opt, index) => ({
+        text: opt,
+        index,
+        questionId: newQuestion.id,
+      }));
+
+      await db.choice.createMany({
+        data: choiceData,
+      });
+
+      await db.question.update({
+        where: { id: newQuestion.id },
+        data: { correct: correctAnswers[0] }, // assuming single correct
+      });
+    }
+
+    return NextResponse.json({ message: "Question created" }, { status: 201 });
   } catch (err) {
-    console.error("Create question failed:", err);
-    return new Response(JSON.stringify({ error: "Internal Error" }), { status: 500 });
+    console.error(err);
+    return NextResponse.json({ message: "Internal error" }, { status: 500 });
   }
 }

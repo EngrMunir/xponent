@@ -15,51 +15,60 @@ export default function QuestionModal({ isOpen, onClose, groupId, onSuccess }) {
   const [score, setScore] = useState(1);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async () => {
-    const trimmedOptions = options.map((opt) => opt.trim());
-    if (
-      !questionText.trim() ||
-      correctIndex === null ||
-      trimmedOptions.some((opt) => !opt) ||
-      !score
-    ) {
-      alert("Please fill all fields");
+ const handleSubmit = async () => {
+  const trimmedOptions = options.map((opt) => opt.trim());
+
+  if (
+  !questionText.trim() ||
+  !score ||
+  (questionType === "MCQ" && (correctIndex === null || trimmedOptions.some((opt) => !opt)))
+) {
+  alert("Please fill all fields");
+  return;
+}
+  if (questionType === "MCQ") {
+    if (correctIndex === null || trimmedOptions.some((opt) => !opt)) {
+      alert("Please fill all options and select correct answer");
       return;
     }
+  }
 
-    try {
-      setLoading(true);
-      const res = await fetch("/api/questions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          groupId,
-          text: questionText,
-          type: questionType,
-          score: parseInt(score),
+  try {
+    setLoading(true);
+    const res = await fetch("/api/questions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        groupId,
+        text: questionText,
+        type: questionType,
+        score: parseInt(score),
+        ...(questionType === "MCQ" && {
           options: trimmedOptions,
           correctAnswers: [correctIndex],
         }),
-      });
+      }),
+    });
 
-      if (res.ok) {
-        onSuccess();
-        onClose();
-        setQuestionText("");
-        setOptions(["", "", "", ""]);
-        setCorrectIndex(null);
-        setQuestionType("MCQ");
-        setScore(1);
-      } else {
-        alert("Failed to create question");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Error occurred");
-    } finally {
-      setLoading(false);
+    if (res.ok) {
+      onSuccess();
+      onClose();
+      setQuestionText("");
+      setOptions(["", "", "", ""]);
+      setCorrectIndex(null);
+      setQuestionType("MCQ");
+      setScore(1);
+    } else {
+      alert("Failed to create question");
     }
-  };
+  } catch (err) {
+    console.error(err);
+    alert("Error occurred");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <Dialog open={isOpen} onClose={onClose} className="fixed inset-0 z-50 flex items-center justify-center">
