@@ -26,6 +26,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { url } from "zod";
 
 // This is sample data.
 const data = {
@@ -65,45 +66,16 @@ const data = {
       title: "All Quizzes",
       url: "/dashboard/admin/quizzes",
     },
+    {
+      title:"Create Test",
+      url:"/dashboard/admin/tests/create"
+    },
+    {
+      title:"All Test",
+      url:"/dashboard/admin/tests"
+    }
   ],
 },
-
-    {
-      title: "Models",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
-    },
   ],
 };
 
@@ -111,12 +83,8 @@ export function AppSidebar({ user, ...props }) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <h2 className="text-3xl mt-2 ml-5">Exponent</h2>
-      {/* <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
-      </SidebarHeader> */}
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={user} />
