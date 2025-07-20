@@ -27,3 +27,16 @@ export const sendVerificationEmail = async (email, token) => {
   //   html: `<p>Click <a href="${confirmLink}">here</a> to confirm email.</p>`,
   // });
 };
+
+export async function sendLoginCredentials(email, password) {
+  const loginUrl = `${process.env.NEXT_PUBLIC_APP_URL}/auth/login`;
+  console.log(`
+-------------------------------------
+🧾 Test Credentials for Interviewee:
+-------------------------------------
+Email       : ${email}
+Password    : ${password}
+Login URL   : ${loginUrl}
+-------------------------------------
+`);
+}

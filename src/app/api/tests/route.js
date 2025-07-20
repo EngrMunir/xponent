@@ -1,4 +1,3 @@
-// /api/tests/route.js
 
 import { db } from "@/lib/db";
 
