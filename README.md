@@ -31,4 +31,4 @@ bun dev
 
 ## 3. Credential
 ## Admin
-Email: admin@example.com  Password: admin123
+Email: admin@gmail.com  Password: admin123
