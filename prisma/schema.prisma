@@ -11,17 +11,23 @@ enum QuestionType {
   MCQ
   TEXT
 }
-
+enum Role {
+  USER
+  ADMIN
+}
 model User {
   id            String            @id @default(uuid())
   name          String
   email         String            @unique
+  role     Role     @default(USER)
   image         String?
   emailVerified DateTime?
   password      String?
   accounts      Account[]
   assignedTests AssignedTest[]
   testSessions  UserTestSession[]
+  
+
 }
 
 model Account {
