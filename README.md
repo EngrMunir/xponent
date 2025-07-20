@@ -29,4 +29,6 @@ pnpm dev
 bun dev
 ```
 
-## 3. Credential Registration: Verification link is available in console.
+## 3. Credential
+## Admin
+Email: admin@example.com  Password: admin123
